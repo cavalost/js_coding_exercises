@@ -19,6 +19,8 @@ function camelCaseWords(words) {
 function getTotalSubjects(people) {
   if (people === undefined) throw new Error("people is required");
   // Your code here!
+  if (typeof people !== "object") throw new Error("people must be an object");
+  return people.reduce((acc, { subjects }) => acc + subjects.length, 0);
 }
 
 function checkIngredients(menu, ingredient) {
