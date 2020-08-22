@@ -17,6 +17,8 @@ function findNamesBeginningWith(names, char) {
 function findVerbs(words) {
   if (!words) throw new Error("words is required");
   // Your code here
+  if (!Array.isArray(words)) throw new Error("words must be an array");
+  return words.filter(el => el.substring(0,3) === "to ");
 }
 
 function getIntegers(nums) {
