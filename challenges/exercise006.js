@@ -28,6 +28,9 @@ const isValidDNA = str => {
  */
 const getComplementaryDNA = str => {
   if (str === undefined) throw new Error("str is required");
+  if (typeof str !== "string") throw new Error("str must be a string");
+  const dnaBasePair = { T: 'A', A: 'T', C: 'G', G: 'C'};
+  return str.split('').reduce((acc, el) => acc + dnaBasePair[el], '');
 };
 
 /**

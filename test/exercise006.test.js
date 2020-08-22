@@ -1,6 +1,7 @@
 const {
   sumMultiples,
-  isValidDNA
+  isValidDNA,
+  getComplementaryDNA
 } = require("../challenges/exercise006");
 
 describe("sumMultiples", () => {
@@ -57,5 +58,28 @@ describe("isValidDNA", () => {
     expect(()=> isValidDNA({})).toThrowError(errorMessage);
     expect(()=> isValidDNA(1234)).toThrowError(errorMessage);
     expect(()=> isValidDNA([])).toThrowError(errorMessage);
+  });
+});
+
+describe("getComplementaryDNA", () => {
+  test("returns the complementary DNA", () => {
+    expect(getComplementaryDNA("GCT")).toBe("CGA");
+    expect(getComplementaryDNA("CGTA")).toBe("GCAT");
+  });
+
+  test("Throw an error when the function is called without arguments or with undefined", () => {
+    const errorMessage = "str is required";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => getComplementaryDNA()).toThrowError(errorMessage);
+    expect(()=> getComplementaryDNA(undefined)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when arr is not a string", () => {
+    const errorMessage = "str must be a string";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => getComplementaryDNA(null)).toThrowError(errorMessage);
+    expect(()=> getComplementaryDNA({})).toThrowError(errorMessage);
+    expect(()=> getComplementaryDNA(1234)).toThrowError(errorMessage);
+    expect(()=> getComplementaryDNA([])).toThrowError(errorMessage);
   });
 });
