@@ -51,6 +51,8 @@ function reverseWord(word) {
 function reverseAllWords(words) {
   if (words === undefined) throw new Error("words is required");
   // Add your code here!
+  if (!Array.isArray(words)) throw new Error("words must be an array");
+  return words.map(word => reverseWord(word)); //note: we assume that all elements are strings
 }
 
 function countLinuxUsers(users) {
