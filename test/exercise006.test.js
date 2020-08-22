@@ -1,7 +1,8 @@
 const {
   sumMultiples,
   isValidDNA,
-  getComplementaryDNA
+  getComplementaryDNA,
+  isItPrime
 } = require("../challenges/exercise006");
 
 describe("sumMultiples", () => {
@@ -81,5 +82,31 @@ describe("getComplementaryDNA", () => {
     expect(()=> getComplementaryDNA({})).toThrowError(errorMessage);
     expect(()=> getComplementaryDNA(1234)).toThrowError(errorMessage);
     expect(()=> getComplementaryDNA([])).toThrowError(errorMessage);
+  });
+});
+
+describe("isItPrime", () => {
+  test("returns if the number is prime or not", () => {
+    expect(isItPrime(9)).toBe(false);
+    expect(isItPrime(7)).toBe(true);
+    expect(isItPrime(2)).toBe(true);
+    expect(isItPrime(4)).toBe(false);
+    expect(isItPrime(11)).toBe(true);
+  });
+
+  test("Throw an error when the function is called without arguments or with undefined", () => {
+    const errorMessage = "n is required";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => isItPrime()).toThrowError(errorMessage);
+    expect(()=> isItPrime(undefined)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when n is not a number", () => {
+    const errorMessage = "n must be a number";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => isItPrime(null)).toThrowError(errorMessage);
+    expect(()=> isItPrime({})).toThrowError(errorMessage);
+    expect(()=> isItPrime("asdf")).toThrowError(errorMessage);
+    expect(()=> isItPrime([])).toThrowError(errorMessage);
   });
 });
