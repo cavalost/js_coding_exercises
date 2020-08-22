@@ -8,6 +8,12 @@ function getSquares(nums) {
 function camelCaseWords(words) {
   if (words === undefined) throw new Error("words is required");
   // Your code here!
+  if (!Array.isArray(words)) throw new Error("words must be an array");
+  let result = words[0];
+  for (let i = 1; i < words.length; i++) {
+    result += words[i][0].toUpperCase() + words[i].substring(1);
+  }
+  return result;
 }
 
 function getTotalSubjects(people) {
