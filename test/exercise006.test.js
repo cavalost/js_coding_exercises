@@ -2,7 +2,8 @@ const {
   sumMultiples,
   isValidDNA,
   getComplementaryDNA,
-  isItPrime
+  isItPrime,
+  createMatrix
 } = require("../challenges/exercise006");
 
 describe("sumMultiples", () => {
@@ -108,5 +109,32 @@ describe("isItPrime", () => {
     expect(()=> isItPrime({})).toThrowError(errorMessage);
     expect(()=> isItPrime("asdf")).toThrowError(errorMessage);
     expect(()=> isItPrime([])).toThrowError(errorMessage);
+  });
+});
+
+describe("createMatrix", () => {
+  test("returns an array of n arrays with the item filled in each one", () => {
+    expect(createMatrix(1, 0)).toStrictEqual([[0]]);
+    expect(createMatrix(2, true)).toStrictEqual([[true, true], [true, true]]);
+    expect(createMatrix(3, 'foo')).toStrictEqual([['foo', 'foo', 'foo'], ['foo', 'foo', 'foo'], ['foo', 'foo', 'foo']]);
+  });
+
+  test("Throw an error when the function is called without arguments or with undefined", () => {
+    const nErrorMessage = "n is required";
+    const fillErrorMessage = "fill is required";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => createMatrix()).toThrowError(nErrorMessage);
+    expect(()=> createMatrix(undefined)).toThrowError(nErrorMessage);
+    expect(()=> createMatrix(1)).toThrowError(fillErrorMessage);
+    expect(()=> createMatrix(1, undefined)).toThrowError(fillErrorMessage);
+  });
+
+  test("Throw an error when n is not a number", () => {
+    const errorMessage = "n must be a number";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => createMatrix(null, 0)).toThrowError(errorMessage);
+    expect(()=> createMatrix({}, 'foo')).toThrowError(errorMessage);
+    expect(()=> createMatrix("asdf", null)).toThrowError(errorMessage);
+    expect(()=> createMatrix([], {})).toThrowError(errorMessage);
   });
 });
