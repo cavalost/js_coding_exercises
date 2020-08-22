@@ -31,6 +31,8 @@ function getIntegers(nums) {
 function getCities(users) {
   if (!users) throw new Error("users is required");
   // Your code here
+  if (typeof users !== "object") throw new Error("users must be an object");
+  return users.map(el => el.data.city.displayName);
 }
 
 function getSquareRoots(nums) {
