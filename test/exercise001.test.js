@@ -44,6 +44,24 @@ describe("generateInitials", () => {
   test("returns the initials of a firstname and surname", () => {
     expect(generateInitials("Frederic", "Bonneville")).toBe("F.B");
   });
+
+  test("Throw an error when no name is specified or if it is undefined", () => {
+    const firstNameErrorMessage = "firstName is required";
+    const lastNameErrorMessage = "lastName is required";
+    expect(() => generateInitials()).toThrowError(firstNameErrorMessage);
+    expect(()=> generateInitials(undefined)).toThrowError(firstNameErrorMessage);
+    expect(() => generateInitials("Frederic")).toThrowError(lastNameErrorMessage);
+    expect(()=> generateInitials("Frederic", undefined)).toThrowError(lastNameErrorMessage);
+  });
+
+  test("Throw an error when name is not a string", () => {
+    const firstNameErrorMessage = "firstName must be a string with at least 1 character";
+    const lastNameErrorMessage = "lastName must be a string with at least 1 character";
+    expect(() => generateInitials("", "")).toThrowError(firstNameErrorMessage);
+    expect(()=> generateInitials(9, "Bonneville")).toThrowError(firstNameErrorMessage);
+    expect(() => generateInitials("Frederic", "")).toThrowError(lastNameErrorMessage);
+    expect(()=> generateInitials("Frederic", 9)).toThrowError(lastNameErrorMessage);
+  });
 });
 
 describe("addVAT", () => {
