@@ -38,6 +38,11 @@ function countSheep(arr) {
 function hasMPostCode(person) {
   if (person === undefined) throw new Error("person is required");
   // Your code here!
+  if (typeof person !== "object") throw new Error("person must be an object");
+  if (typeof person.address !== "object") throw new Error("address must be an object");
+  if (typeof person.address.postCode !== "string") throw new Error("postCode must be a string");
+  if (typeof person.address.city !== "string") throw new Error("city must be a string");
+  return person.address.postCode[0] === "M" && isFromManchester(person.address);
 }
 
 module.exports = {
