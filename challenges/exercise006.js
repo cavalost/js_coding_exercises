@@ -80,6 +80,10 @@ const createMatrix = (n, fill) => {
 const areWeCovered = (staff, day) => {
   if (staff === undefined) throw new Error("staff is required");
   if (day === undefined) throw new Error("day is required");
+  if (!Array.isArray(staff)) throw new Error("staff must be an array");
+  if (typeof day !== "string") throw new Error("day must be a string");
+  if (!['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].includes(day)) throw new Error("day must be a valid day of the week");
+  return staff.reduce((acc, { rota }) => rota.includes(day) ? ++acc : acc, 0) >= 3;
 };
 
 module.exports = {

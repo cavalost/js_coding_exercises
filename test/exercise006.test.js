@@ -3,7 +3,8 @@ const {
   isValidDNA,
   getComplementaryDNA,
   isItPrime,
-  createMatrix
+  createMatrix,
+  areWeCovered
 } = require("../challenges/exercise006");
 
 describe("sumMultiples", () => {
@@ -136,5 +137,45 @@ describe("createMatrix", () => {
     expect(()=> createMatrix({}, 'foo')).toThrowError(errorMessage);
     expect(()=> createMatrix("asdf", null)).toThrowError(errorMessage);
     expect(()=> createMatrix([], {})).toThrowError(errorMessage);
+  });
+});
+
+describe("areWeCovered", () => {
+  test("returns if there are enough employees on a given day", () => {
+    const staff = [
+        { name: "Sally", rota: ["Monday", "Tuesday", "Friday"] },
+        { name: "Pedro", rota: ["Saturday", "Sunday", "Tuesday", "Wednesday"] },
+        { name: "Charles", rota: ["Thursday", "Monday", "Tuesday", "Wednesday"] },
+    ];
+    expect(areWeCovered(staff, 'Tuesday')).toBe(true);
+    expect(areWeCovered(staff, 'Monday')).toBe(false);
+    expect(areWeCovered(staff, 'Friday')).toBe(false);
+  });
+
+  test("Throw an error when the function is called without arguments or with undefined", () => {
+    const staffErrorMessage = "staff is required";
+    const dayErrorMessage = "day is required";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => areWeCovered()).toThrowError(staffErrorMessage);
+    expect(()=> areWeCovered(undefined)).toThrowError(staffErrorMessage);
+    expect(()=> areWeCovered([])).toThrowError(dayErrorMessage);
+    expect(()=> areWeCovered([], undefined)).toThrowError(dayErrorMessage);
+  });
+
+  test("Throw an error when staff is not an array", () => {
+    const errorMessage = "staff must be an array";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => areWeCovered(null, 0)).toThrowError(errorMessage);
+    expect(()=> areWeCovered({}, 'foo')).toThrowError(errorMessage);
+    expect(()=> areWeCovered("asdf", null)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when day is not a valid day of the week", () => {
+    const notStringErrorMessage = "day must be a string";
+    const weekErrorMessage = "day must be a valid day of the week";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => areWeCovered([], 0)).toThrowError(notStringErrorMessage);
+    expect(()=> areWeCovered([], false)).toThrowError(notStringErrorMessage);
+    expect(()=> areWeCovered([], "Sasunday")).toThrowError(weekErrorMessage);
   });
 });
