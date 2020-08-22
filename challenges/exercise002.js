@@ -1,6 +1,9 @@
 function getFillings(sandwich) {
   if (sandwich === undefined) throw new Error("ingredients is required");
   // Your code here!
+  if (typeof sandwich !== "object") throw new Error("sandwich must be an object");
+  if (!Array.isArray(sandwich.fillings)) throw new Error("fillings must be an array");
+  return sandwich.fillings;
 }
 
 function isFromManchester(person) {
