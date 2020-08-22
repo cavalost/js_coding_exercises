@@ -38,6 +38,8 @@ function getCities(users) {
 function getSquareRoots(nums) {
   if (!nums) throw new Error("nums is required");
   // Your code here
+  if (!Array.isArray(nums)) throw new Error("nums must be an array");
+  return nums.map(el => +(Math.sqrt(el).toFixed(2)));
 }
 
 function findSentencesContaining(sentences, str) {
