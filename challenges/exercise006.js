@@ -6,6 +6,8 @@
  */
 const sumMultiples = arr => {
   if (arr === undefined) throw new Error("arr is required");
+  if (!Array.isArray(arr)) throw new Error("arr must be an array");
+  return arr.reduce((acc, el) => (el % 3 === 0 || el % 5 === 0) ? acc + el : acc, 0);
 };
 
 /**
@@ -15,6 +17,8 @@ const sumMultiples = arr => {
  */
 const isValidDNA = str => {
   if (str === undefined) throw new Error("str is required");
+  if (typeof str !== "string") throw new Error("str must be a string");
+  return str.length > 0 && !str.match(/[^GCTA]/);
 };
 
 /**
@@ -24,6 +28,9 @@ const isValidDNA = str => {
  */
 const getComplementaryDNA = str => {
   if (str === undefined) throw new Error("str is required");
+  if (typeof str !== "string") throw new Error("str must be a string");
+  const dnaBasePair = { T: 'A', A: 'T', C: 'G', G: 'C'};
+  return str.split('').reduce((acc, el) => acc + dnaBasePair[el], '');
 };
 
 /**
@@ -33,6 +40,11 @@ const getComplementaryDNA = str => {
  */
 const isItPrime = n => {
   if (n === undefined) throw new Error("n is required");
+  if (typeof n !== "number") throw new Error("n must be a number");
+  for(let i = 2; i < n; i++) {
+    if (n % i === 0) return false;
+  }
+  return n > 1;
 };
 
 /**
@@ -49,6 +61,8 @@ const isItPrime = n => {
 const createMatrix = (n, fill) => {
   if (n === undefined) throw new Error("n is required");
   if (fill === undefined) throw new Error("fill is required");
+  if (typeof n !== "number") throw new Error("n must be a number");
+  return Array(n).fill(Array(n).fill(fill));
 };
 
 /**
@@ -66,6 +80,10 @@ const createMatrix = (n, fill) => {
 const areWeCovered = (staff, day) => {
   if (staff === undefined) throw new Error("staff is required");
   if (day === undefined) throw new Error("day is required");
+  if (!Array.isArray(staff)) throw new Error("staff must be an array");
+  if (typeof day !== "string") throw new Error("day must be a string");
+  if (!['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].includes(day)) throw new Error("day must be a valid day of the week");
+  return staff.reduce((acc, { rota }) => rota.includes(day) ? ++acc : acc, 0) >= 3;
 };
 
 module.exports = {
