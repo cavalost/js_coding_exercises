@@ -2,6 +2,10 @@ const findNextNumber = (nums, n) => {
   if (nums === undefined) throw new Error("nums is required");
   if (n === undefined) throw new Error("n is required");
   // Your code here!
+  if (!Array.isArray(nums)) throw new Error("nums must be an array");
+  if (typeof n !== "number") throw new Error("n must be a number");
+  if (!nums.includes(n) || nums.indexOf(n) === nums.length - 1) return null;
+  return nums[nums.indexOf(n) + 1];
 };
 
 const count1sand0s = str => {
