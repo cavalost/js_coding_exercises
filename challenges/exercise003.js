@@ -27,6 +27,9 @@ function checkIngredients(menu, ingredient) {
   if (menu === undefined) throw new Error("menu is required");
   if (!ingredient) throw new Error("ingredient is required");
   // Your code here!
+  if (!Array.isArray(menu)) throw new Error("menu must be an array");
+  if (typeof ingredient !== "string") throw new Error("ingredient must be a string");
+   return menu.filter(el => el.ingredients.includes(ingredient)).length > 0;
 }
 
 function duplicateNumbers(arr1, arr2) {
