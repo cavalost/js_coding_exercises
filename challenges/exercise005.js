@@ -11,6 +11,14 @@ const findNextNumber = (nums, n) => {
 const count1sand0s = str => {
   if (str === undefined) throw new Error("str is required");
   // Your code here!
+  if (typeof str !== "string") throw new Error("str must be a string");
+  const strArr = str.split('');
+  const result = {1: 0, 0: 0};
+  for (const el of strArr) {
+    if (el === '1') result['1']++;
+    else if (el === '0') result['0']++;
+  }
+  return result;
 };
 
 const reverseNumber = n => {
