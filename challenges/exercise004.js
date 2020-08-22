@@ -9,6 +9,9 @@ function findNamesBeginningWith(names, char) {
   if (!names) throw new Error("names is required");
   if (!char) throw new Error("char is required");
   // Your code here
+  if (!Array.isArray(names)) throw new Error("names must be an array");
+  if (typeof char !== "string") throw new Error("char must be a string");
+  return names.filter(el => el[0] === char);
 }
 
 function findVerbs(words) {
