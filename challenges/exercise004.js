@@ -18,12 +18,14 @@ function findVerbs(words) {
   if (!words) throw new Error("words is required");
   // Your code here
   if (!Array.isArray(words)) throw new Error("words must be an array");
-  return words.filter(el => el.substring(0,3) === "to ");
+  return words.filter(el => el.substring(0, 3) === "to ");
 }
 
 function getIntegers(nums) {
   if (!nums) throw new Error("nums is required");
   // Your code here
+  if (!Array.isArray(nums)) throw new Error("nums must be an array");
+  return nums.filter(el => Number.isInteger(el));
 }
 
 function getCities(users) {
