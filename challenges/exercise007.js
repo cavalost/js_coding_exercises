@@ -4,6 +4,8 @@
  */
 const sumDigits = n => {
   if (n === undefined) throw new Error("n is required");
+  if (typeof n !== "number") throw new Error("n must be a number");
+  return n.toString().split('').reduce((acc, el) => ['.', '-', '+'].includes(el) ? acc : (+el + acc), 0);
 };
 
 /**
@@ -14,9 +16,18 @@ const sumDigits = n => {
  * @param {Number} end
  * @param {Number} step
  */
-const createRange = (start, end, step) => {
+const createRange = (start, end, step = 1) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
+  if (typeof start !== "number") throw new Error("start must be a number");
+  if (typeof end !== "number") throw new Error("end must be a number");
+  if (typeof step !== "number") throw new Error("step must be a number");
+  if (start >= end) throw new Error("start cannot be bigger nor equal than end");
+  const result = [];
+  for (let j = start; j <= end; j += step) {
+    result.push(j > end ? end : j);
+  }
+  return result;
 };
 
 /**
@@ -51,6 +62,19 @@ const createRange = (start, end, step) => {
 const getScreentimeAlertList = (users, date) => {
   if (users === undefined) throw new Error("users is required");
   if (date === undefined) throw new Error("date is required");
+  if (!Array.isArray(users)) throw new Error("users must be an array");
+  if (typeof date !== "string") throw new Error("date must be a string");
+  if (!Date.parse(date)) throw new Error("date must be a valid date");
+  return users.reduce((acc, user) => {
+    const screenTimeDay = user.screenTime.find(el => el.date === date);
+    if (screenTimeDay) {
+      const dayCounter = Object.values(screenTimeDay.usage).reduce((counter, el) => el + counter, 0);
+      if (dayCounter > 100) {
+        acc.push(user.username);
+      }
+    }
+    return acc;
+  }, []);
 };
 
 /**
@@ -65,6 +89,19 @@ const getScreentimeAlertList = (users, date) => {
  */
 const hexToRGB = hexStr => {
   if (hexStr === undefined) throw new Error("hexStr is required");
+  if (typeof hexStr !== "string") throw new Error("hexStr must be a string");
+  if (hexStr.length !== 7 || hexStr[0] !== "#") throw new Error("hexStr doesn't have a valid format");
+  const hex2rgb = { 0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, A: 10, B: 11, C: 12, D: 13, E: 14, F: 15 };
+  const hex = [hexStr.substring(1, 3), hexStr.substring(3, 5), hexStr.substring(5, 7)];
+  const rgb = [];
+  for (const color of hex) {
+    const firstNumber = hex2rgb[color[0]];
+    const secondNumber = hex2rgb[color[1]];
+    if (firstNumber === undefined) throw new Error("hexStr doesn't have a valid format");
+    if (secondNumber === undefined) throw new Error("hexStr doesn't have a valid format");
+    rgb.push((firstNumber * 16 ) + secondNumber);
+  }
+  return `rgb(${rgb.toString()})`;
 };
 
 /**
@@ -79,6 +116,62 @@ const hexToRGB = hexStr => {
  */
 const findWinner = board => {
   if (board === undefined) throw new Error("board is required");
+  if (!Array.isArray(board)) throw new Error("board must be an array");
+  const boardLength = board.length;
+  if (board.some(row => row.length !== boardLength)) throw new Error("board must be a square matrix");
+  let result = null;
+  let xHasWon = false;
+  let zeroHasWon = false;
+  let xVertical = Array(boardLength).fill(0);
+  let zeroVertical = Array(boardLength).fill(0);
+  let xDiagonal = 0;
+  let zeroDiagonal = 0;
+  let xDiagonalReverse = 0;
+  let zeroDiagonalReverse = 0;
+  board.forEach((row, index) => {
+    let xHorizontal = 0;
+    let zeroHorizontal = 0;
+    row.forEach((cell, rowIndex) => {
+      if (cell === "X") {
+        xVertical[rowIndex]++;
+        xHorizontal++;
+      }
+      if (cell === "0") {
+        zeroVertical[rowIndex]++;
+        zeroHorizontal++;
+      }
+    });
+    if (row[index] === "X") {
+      xDiagonal++;
+    }
+    if (row[index] === "0") {
+      zeroDiagonal++;
+    }
+    if (row[boardLength - 1 - index] === "X") {
+      xDiagonalReverse++;
+    }
+    if (row[boardLength - 1 - index] === "0") {
+      zeroDiagonalReverse++;
+    }
+    if (xHorizontal === boardLength) {
+      xHasWon = true;
+    }
+    if (zeroHorizontal === boardLength) {
+      zeroHasWon = true;
+    }
+  });
+  if (xVertical.includes(boardLength) || xDiagonal === boardLength || xDiagonalReverse === boardLength) {
+    xHasWon = true;
+  }
+  if (zeroVertical.includes(boardLength) || zeroDiagonal === boardLength || zeroDiagonalReverse === boardLength) {
+    zeroHasWon = true;
+  }
+  if (xHasWon && !zeroHasWon) {
+    result = "X";
+  } else if (!xHasWon && zeroHasWon) {
+    result = "0";
+  }
+  return result;
 };
 
 module.exports = {
