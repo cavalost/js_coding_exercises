@@ -4,6 +4,8 @@
  */
 const sumDigits = n => {
   if (n === undefined) throw new Error("n is required");
+  if (typeof n !== "number") throw new Error("n must be a number");
+  return n.toString().split('').reduce((acc, el) => ['.', '-', '+'].includes(el) ? acc : (+el + acc), 0);
 };
 
 /**
