@@ -1,7 +1,8 @@
 const {
   sumDigits,
   createRange,
-  getScreentimeAlertList
+  getScreentimeAlertList,
+  hexToRGB
 } = require("../challenges/exercise007");
 
 describe("sumDigits", () => {
@@ -120,5 +121,37 @@ describe("getScreentimeAlertList", () => {
     expect(()=> getScreentimeAlertList([], null)).toThrowError(notStringErrorMessage);
     expect(()=> getScreentimeAlertList([], "a")).toThrowError(notDateErrorMessage);
     expect(() => getScreentimeAlertList([], "2019-a-01")).toThrowError(notDateErrorMessage);
+  });
+});
+
+describe("hexToRGB", () => {
+  test("convert hex to rgb", () => {
+    expect(hexToRGB("#FF1133")).toBe("rgb(255,17,51)");
+    expect(hexToRGB("#000000")).toBe("rgb(0,0,0)");
+    expect(hexToRGB("#FFFFFF")).toBe("rgb(255,255,255)");
+  });
+
+  test("Throw an error when the function is called without arguments or with undefined", () => {
+    const errorMessage = "hexStr is required";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => hexToRGB()).toThrowError(errorMessage);
+    expect(()=> hexToRGB(undefined)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when hexStr is not a string", () => {
+    const errorMessage = "hexStr must be a string";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => hexToRGB(null)).toThrowError(errorMessage);
+    expect(()=> hexToRGB({})).toThrowError(errorMessage);
+    expect(()=> hexToRGB(0)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when hexStr has not a valid format", () => {
+    const errorMessage = "hexStr doesn't have a valid format";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => hexToRGB("a")).toThrowError(errorMessage);
+    expect(()=> hexToRGB("000000")).toThrowError(errorMessage);
+    expect(()=> hexToRGB("#1234567")).toThrowError(errorMessage);
+    expect(()=> hexToRGB("#12345G")).toThrowError(errorMessage);
   });
 });
