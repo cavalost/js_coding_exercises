@@ -1,6 +1,7 @@
 const {
   sumDigits,
-  createRange
+  createRange,
+  getScreentimeAlertList
 } = require("../challenges/exercise007");
 
 describe("sumDigits", () => {
@@ -68,5 +69,56 @@ describe("createRange", () => {
     // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
     expect(() => createRange(2, 1)).toThrowError(errorMessage);
     expect(()=> createRange(2, 2)).toThrowError(errorMessage);
+  });
+});
+
+describe("getScreentimeAlertList", () => {
+  test("return users that have consumed more than 100 mins in a given day", () => {
+    const users =  [
+      {
+          username: "beth_1234",
+          name: "Beth Smith",
+          screenTime: [
+              { date: "2019-05-01", usage: { twitter: 34, instagram: 22, facebook: 40} },
+              { date: "2019-05-02", usage: { twitter: 56, instagram: 40, facebook: 31} },
+              { date: "2019-05-03", usage: { twitter: 12, instagram: 15, facebook: 19} },
+              { date: "2019-05-04", usage: { twitter: 10, instagram: 56, facebook: 61} },
+          ]
+     },
+     {
+        username: "sam_j_1989",
+        name: "Sam Jones",
+        screenTime: [
+            { date: "2019-05-02", usage: { twitter: 56, instagram: 40, facebook: 31} },
+            { date: "2019-06-11", usage: { mapMyRun: 0, whatsApp: 0, facebook: 0, safari: 10} },
+            { date: "2019-06-13", usage: { mapMyRun: 0, whatsApp: 0, facebook: 0, safari: 16} },
+            { date: "2019-06-14", usage: { mapMyRun: 0, whatsApp: 0, facebook: 0, safari: 131} }
+        ]
+     },
+    ];
+    expect(getScreentimeAlertList(users, "2019-05-04")).toStrictEqual(["beth_1234"]);
+    expect(getScreentimeAlertList(users, "2019-06-14")).toStrictEqual(["sam_j_1989"]);
+    expect(getScreentimeAlertList(users, "2019-05-02")).toStrictEqual(["beth_1234", "sam_j_1989"]);
+    expect(getScreentimeAlertList(users, "2019-06-13")).toStrictEqual([]);
+    expect(getScreentimeAlertList(users, "2019-06-17")).toStrictEqual([]);
+  });
+
+  test("Throw an error when users is not an array", () => {
+    const errorMessage = "users must be an array";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => getScreentimeAlertList(null, "")).toThrowError(errorMessage);
+    expect(()=> getScreentimeAlertList({}, "")).toThrowError(errorMessage);
+    expect(()=> getScreentimeAlertList('asdf', "")).toThrowError(errorMessage);
+    expect(() => getScreentimeAlertList(2, "")).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when date is not a valid date string", () => {
+    const notStringErrorMessage = "date must be a string";
+    const notDateErrorMessage = "date must be a valid date";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => getScreentimeAlertList([], 0)).toThrowError(notStringErrorMessage);
+    expect(()=> getScreentimeAlertList([], null)).toThrowError(notStringErrorMessage);
+    expect(()=> getScreentimeAlertList([], "a")).toThrowError(notDateErrorMessage);
+    expect(() => getScreentimeAlertList([], "2019-a-01")).toThrowError(notDateErrorMessage);
   });
 });
