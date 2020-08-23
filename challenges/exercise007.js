@@ -116,6 +116,62 @@ const hexToRGB = hexStr => {
  */
 const findWinner = board => {
   if (board === undefined) throw new Error("board is required");
+  if (!Array.isArray(board)) throw new Error("board must be an array");
+  const boardLength = board.length;
+  if (board.some(row => row.length !== boardLength)) throw new Error("board must be a square matrix");
+  let result = null;
+  let xHasWon = false;
+  let zeroHasWon = false;
+  let xVertical = Array(boardLength).fill(0);
+  let zeroVertical = Array(boardLength).fill(0);
+  let xDiagonal = 0;
+  let zeroDiagonal = 0;
+  let xDiagonalReverse = 0;
+  let zeroDiagonalReverse = 0;
+  board.forEach((row, index) => {
+    let xHorizontal = 0;
+    let zeroHorizontal = 0;
+    row.forEach((cell, rowIndex) => {
+      if (cell === "X") {
+        xVertical[rowIndex]++;
+        xHorizontal++;
+      }
+      if (cell === "0") {
+        zeroVertical[rowIndex]++;
+        zeroHorizontal++;
+      }
+    });
+    if (row[index] === "X") {
+      xDiagonal++;
+    }
+    if (row[index] === "0") {
+      zeroDiagonal++;
+    }
+    if (row[boardLength - 1 - index] === "X") {
+      xDiagonalReverse++;
+    }
+    if (row[boardLength - 1 - index] === "0") {
+      zeroDiagonalReverse++;
+    }
+    if (xHorizontal === boardLength) {
+      xHasWon = true;
+    }
+    if (zeroHorizontal === boardLength) {
+      zeroHasWon = true;
+    }
+  });
+  if (xVertical.includes(boardLength) || xDiagonal === boardLength || xDiagonalReverse === boardLength) {
+    xHasWon = true;
+  }
+  if (zeroVertical.includes(boardLength) || zeroDiagonal === boardLength || zeroDiagonalReverse === boardLength) {
+    zeroHasWon = true;
+  }
+  if (xHasWon && !zeroHasWon) {
+    result = "X";
+  } else if (!xHasWon && zeroHasWon) {
+    result = "0";
+  }
+  return result;
 };
 
 module.exports = {

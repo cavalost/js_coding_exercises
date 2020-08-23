@@ -2,7 +2,8 @@ const {
   sumDigits,
   createRange,
   getScreentimeAlertList,
-  hexToRGB
+  hexToRGB,
+  findWinner
 } = require("../challenges/exercise007");
 
 describe("sumDigits", () => {
@@ -153,5 +154,89 @@ describe("hexToRGB", () => {
     expect(()=> hexToRGB("000000")).toThrowError(errorMessage);
     expect(()=> hexToRGB("#1234567")).toThrowError(errorMessage);
     expect(()=> hexToRGB("#12345G")).toThrowError(errorMessage);
+  });
+});
+
+describe("findWinner", () => {
+  test("return winner if there is any. In case of tie there are no winners", () => {
+    let board = [
+        ["X", "0", null],
+        ["X", null, "0"],
+        ["X", null, "0"]
+    ];
+    expect(findWinner(board)).toBe("X");
+    board = [
+      ["0", "0", null],
+      ["0", null, "0"],
+      ["0", null, "0"]
+    ];
+    expect(findWinner(board)).toBe("0");
+    board = [
+      [null, "0", null],
+      ["0", null, "0"],
+      ["0", null, "0"]
+    ];
+    expect(findWinner(board)).toBe(null);
+    board = [
+      ["0", "0", "X"],
+      ["0", null, "X"],
+      ["0", null, "X"]
+    ];
+    expect(findWinner(board)).toBe(null);
+    board = [
+      ["0", "0"],
+      ["X", null]
+    ];
+    expect(findWinner(board)).toBe("0");
+    board = [
+      ["X", "0"],
+      ["X", null]
+    ];
+    expect(findWinner(board)).toBe("X");
+    board = [
+      ["0", null],
+      ["X", "0"]
+    ];
+    expect(findWinner(board)).toBe("0");
+    board = [
+      ["0", "X"],
+      ["X", null]
+    ];
+    expect(findWinner(board)).toBe("X");
+    board = [
+      ["0", "X"],
+      ["X", "0"]
+    ];
+    expect(findWinner(board)).toBe(null);
+    board = [
+      ["0", null, null, null, "0"],
+      ["X", "0", null, "0", null],
+      ["0", null, "0", null, null],
+      ["X", "0", null, null, null],
+      ["0", null, null, null, null]
+    ];
+    expect(findWinner(board)).toBe("0");
+  });
+
+  test("Throw an error when the function is called without arguments or with undefined", () => {
+    const errorMessage = "board is required";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => findWinner()).toThrowError(errorMessage);
+    expect(()=> findWinner(undefined)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when board is not an array", () => {
+    const errorMessage = "board must be an array";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => findWinner(null)).toThrowError(errorMessage);
+    expect(()=> findWinner({})).toThrowError(errorMessage);
+    expect(()=> findWinner(0)).toThrowError(errorMessage);
+  });
+
+  test("Throw an error when board is not a square matrix", () => {
+    const errorMessage = "board must be a square matrix";
+    // To catch the error I have to wrap up the function into another as specified here: https://jestjs.io/docs/en/expect#tothrowerror
+    expect(() => findWinner([["X", null]])).toThrowError(errorMessage);
+    expect(() => findWinner([["X"], [null]])).toThrowError(errorMessage);
   });
 });
