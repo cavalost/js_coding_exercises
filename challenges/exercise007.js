@@ -16,9 +16,18 @@ const sumDigits = n => {
  * @param {Number} end
  * @param {Number} step
  */
-const createRange = (start, end, step) => {
+const createRange = (start, end, step = 1) => {
   if (start === undefined) throw new Error("start is required");
   if (end === undefined) throw new Error("end is required");
+  if (typeof start !== "number") throw new Error("start must be a number");
+  if (typeof end !== "number") throw new Error("end must be a number");
+  if (typeof step !== "number") throw new Error("step must be a number");
+  if (start >= end) throw new Error("start cannot be bigger nor equal than end");
+  const result = [];
+  for (let j = start; j <= end; j += step) {
+    result.push(j > end ? end : j);
+  }
+  return result;
 };
 
 /**
